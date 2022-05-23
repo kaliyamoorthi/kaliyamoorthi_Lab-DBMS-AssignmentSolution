@@ -151,12 +151,12 @@ select supp_id from supplier_pricing group by supp_id having count(supp_id)>3) g
 
 /*6.Find the least expensive product from each category and print the table with category id, name, product name and price of the product*/
 
-select category.cat_id, category.cat_name, min(t2.min_price) as Min_Price 
+select category.cat_id, category.cat_name, min(table2.min_price) as Min_Price 
 from category inner join
-(select product.cat_id, product.pro_name, t1.* from product inner join
-(select pro_id, min(supp_price) as Min_Price from supplier_pricing group by pro_id) as t1 
-where t1.PRO_id=product.pro_id) as t2 
-where t2.cat_id=category.cat_id group by category.cat_id;
+(select product.cat_id, product.pro_name, table1.* from product inner join
+(select pro_id, min(supp_price) as Min_Price from supplier_pricing group by pro_id) as table1 
+where table1.PRO_id=product.pro_id) as table2 
+where table2.cat_id=category.cat_id group by category.cat_id;
 
 /*7.Display the Id and Name of the Product ordered after “2021-10-05”.*/
 
@@ -166,7 +166,7 @@ on product.pro_id=supplier_pricing.pro_id where
 `ORDER`.ORD_DATE>"2021-10-05";
 
 
-/*8) Display customer name and gender whose names start or end with character 'A'.*/
+/*8. Display customer name and gender whose names start or end with character 'A'.*/
 select cus_name, cus_gender from customer
 where cus_name like "A%"; 
 
@@ -181,9 +181,9 @@ Create procedure SupplierRating()
 Begin
 select table.supp_id, supp_name, table.stars as Rating, Type_Of_Service from supplier as supplier id 
 right join 
-(select table1.*, supp_id from supplier_pricing as s
+(select table1.*, supp_id from supplier_pricing as supplier
 right join 
-(select order.ord_id,rat_rating,rat.Type_Of_Service,order.pricing_id from `order` as oredr 
+(select order.ord_id,rat_rating,rat.Type_Of_Service,order.pricing_id from `order`  
 right join
  (select ord_id, rat_rating as rating,
  case 
